@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  background-color: linear-gradient( salmon, teal, violet);
 }
 
 .App-logo {
@@ -35,4 +36,12 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.card-container {
+  background-color: linear-gradient(90deg, salmon, teal, violet);
+}
+
+body{
+  background-color: rgb(244, 208, 172)
 }
