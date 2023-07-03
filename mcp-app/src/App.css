@@ -1,6 +1,6 @@
 .App {
   text-align: center;
-  background-color: linear-gradient( salmon, teal, violet);
+  background-color:  salmon
 }
 
 .App-logo {
@@ -39,9 +39,13 @@
 }
 
 .card-container {
-  background-color: linear-gradient(90deg, salmon, teal, violet);
+  display: flex;
+  background-color: salmon;
 }
-
+.card {
+  max-width: 121px;
+  max-height: 150px;
+}
 body{
   background-color: rgb(244, 208, 172)
 }
