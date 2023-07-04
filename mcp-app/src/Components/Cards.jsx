@@ -29,6 +29,7 @@ export default function Card() {
         {id:10, name:"ten", image: cardTen, seen:false},
         ]
     }
+    let card = {name: "rome", image: romeCardBack};
     function shuffle(cardFront) {
         for (let i = cardFront.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));

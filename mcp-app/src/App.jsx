@@ -1,8 +1,9 @@
 
-import React from 'react'
 import './App.css'
-import { useState,useEffect } from 'react'
+import React,{ useState,useEffect } from 'react'
 import Card from './Components/Cards'
+import ScoreBoard from './Components/Scores'
+import PlayArea from './Components/PlayArea'
 
 function App() {
   
@@ -14,6 +15,8 @@ function App() {
   const [cardFront,setCardFront] = useState(true)
   const {card,setCard} = useState(cardBack)
   const [seenCards,setSeenCards] = useState([])
+  const [scoreBoard,setScoreBoard] = useState([score,highScore])
+
   
   useEffect(() => {
     resetSeenCards()
@@ -40,6 +43,18 @@ function App() {
     setScore(score + 1);
     setReset(false)  
   }
+  
+  function handleAnswer(answer){
+    if(answer === card.answer){
+      startGame()
+    }else{
+      setScore(0)
+      setGameOver(true)
+      setHighScore(score)
+      setReset(true)
+      resetSeenCards()
+    }
+  }
 
 
 
@@ -48,8 +63,10 @@ function App() {
       <header className="App-header">
         <h1>MEMORY CARD GAME</h1>
       </header>
+      <ScoreBoard score={score} highScore={highScore} gameOver={gameOver} reset={reset} setReset={setReset} />
       <div className="game-container">
         <Card onClick={startGame} />
+        <PlayArea onClick={handleAnswer} reset={reset} card={card} />
       </div>
       
     </div>

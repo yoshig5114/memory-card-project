@@ -37,7 +37,11 @@
     transform: rotate(360deg);
   }
 }
-
+.game-container {
+  display: flex;
+  justify-content: space-evenly;
+  background-color: peachpuff;
+}
 .card-container {
   display: flex;
   background-color: salmon;
@@ -48,4 +52,7 @@
 }
 body{
   background-color: rgb(244, 208, 172)
+}
+.score-board-text{
+  color: wheat;
 }
