@@ -10,60 +10,133 @@ function App() {
   const [reset, setReset] = useState(false);
   const [score, setScore] = useState({ current: 0, high: 0 });
   const [gameOver, setGameOver] = useState(false);
-  const [card, setCard] = useState(cardFrontData[randomStart-1].id);
-  const [seenCards, setSeenCards] = useState([]);
-  const [chosenCard, setChosenCard] = useState(card);
+  const [card, setCard] = useState(cardFrontData[0]);
+  const [chosenCard, setChosenCard] = useState(null);
+  const [selectedCard, setSelectedCard] = useState(null);
+  const [cards, setCards] = useState(cardFrontData);
+  console.log(card)
 
   useEffect(() => {
-    resetSeenCards();
-  }, []);
+    setSelectedCard(card);
+    console.log(card)
+  }, [card]);
 
   function resetSeenCards() {
-    setSeenCards([]);
+    const updatedCards = cards.map((card) => ({ ...card, seen: false }));
+    setCards(updatedCards);
   }
 
-function resetGame() {
+  function resetGame() {
+    score.current = 0;
     setReset(true);
-    resetSeenCards();
-    setCard(null);
+    setChosenCard(null);
     setGameOver(false);
+    resetSeenCards();
+    chooseCard(cards);
   }
 
   function startGame() {
+    console.log(card);
     if (gameOver) {
       resetGame();
       return;
     }
-
-    let unseenCards = cardFrontData.filter((card) => !seenCards.includes(card.id));
-    if (unseenCards.length === 0) {
-      resetGame();
-      return;
-    }
-
-    let randomNumber = Math.floor(Math.random() * unseenCards.length);
-    setChosenCard(unseenCards[randomNumber]);
-    setCard(chosenCard.id - 1);
-    setSeenCards([...seenCards, chosenCard.id]);
+    chooseCard(cards);
+    setChosenCard(card)
+    console.log(card)
   }
 
-  function handleAnswer(answer) {
+  function chooseCard(cards) {
+    let randomNumber = Math.floor(Math.random() * 10);
+    const randomCard = cards[randomNumber];
+    setCard(randomCard);
+    const updatedCards = cards.map((card) => ({ ...card, seen: true }));
+    setCards(updatedCards)
+  }
+
+  function checkAnswer(answer) {
+    console.log(card)
     if (gameOver) {
       resetGame();
       return;
     }
-    if (answer === seenCards.includes(card + 1) || answer === seenCards.includes(card - 1)) {
-      setScore((prevScore) => ({ ...prevScore, high: prevScore.high + 1 }));
+    if (answer === card.seen) {
+      //const updatedCards = cards.map((card) => ({ ...card, seen: true }));
       setScore((prevScore) => ({ ...prevScore, current: prevScore.current + 1 }));
-    } 
-      if (score.current === 10) {
-        resetGame();
+      if (score.current >= score.high) {
+        setScore((prevScore) => ({ ...prevScore, high: prevScore.high + 1 }));
       }
-       else {
-        startGame();
-      }
-    } 
-  
+      chooseCard(cards);
+      console.log(card)
+    } else {
+      resetGame();
+    }
+    if (score.current === 9) {
+      resetGame();
+    }
+  }
+
+  // useEffect(() => {
+  //   if (selectedCard) {
+  //     setChosenCard(selectedCard);
+  //     setCard(selectedCard)
+  //   }
+  // }, [selectedCard, setSelectedCard, setChosenCard, setCard]);
+
+  // function resetSeenCards() {
+  //   const updatedCards = cards.map((card) => ({ ...card, seen: false }));
+  //   setCards(updatedCards);
+  // }
+
+  // function resetGame() {
+  //   score.current = 0;
+  //   setReset(true);
+  //   setChosenCard(null);
+  //   setGameOver(false);
+  //   resetSeenCards();
+  //   chooseCard(cards);
+  // }
+
+  // function startGame() {
+  //   console.log(card);
+  //   if (gameOver) {
+  //     resetGame();
+  //     return;
+  //   }
+  //   setSelectedCard(card);
+  // }
+
+  // function chooseCard(cards) {
+  //   let randomNumber = Math.floor(Math.random() * 10);
+  //   const randomCard = cards[randomNumber];
+  //   setCard(randomCard);
+  //   setSelectedCard(null);
+  // }
+
+  // function checkAnswer(answer) {
+  //   if (gameOver) {
+  //     resetGame();
+  //     return;
+  //   }
+  //   if (answer === card.seen) {
+  //     const updatedCards = cards.map((card) =>({ ...card, seen: true }));
+  //     setScore((prevScore) => ({ ...prevScore, current: prevScore.current + 1 }));
+  //     if (score.current >= score.high) {
+  //       setScore((prevScore) => ({ ...prevScore, high: prevScore.high + 1 }));
+  //     }
+  //     //setSelectedCard(card)
+  //     setCards(updatedCards)
+  //     //setSelectedCard(card)
+  //     chooseCard(cards);
+  //     setSelectedCard(card);
+  //     console.log(card)
+  //   } else {
+  //     resetGame();
+  //   }
+  //   if (score.current === 9) {
+  //     resetGame();
+  //   }
+  // }
 
   return (
     <div className="App">
@@ -80,10 +153,10 @@ function resetGame() {
       />
       <div className="game-container">
         <div className="card-container">
-          <Card onClick={startGame} card={card} gameOver={gameOver} chosenCard={chosenCard}/>
+          <Card onClick={startGame} card={card} gameOver={gameOver} chosenCard={chosenCard} startGame={startGame}/>
         </div>
         <div className="play-area-container">
-          <PlayArea onClick={handleAnswer} resetGame={resetGame} card={card} gameOver={gameOver} chosenCard={chosenCard}  />
+          <PlayArea onClick={checkAnswer}  resetGame={resetGame} card={card} gameOver={gameOver} chosenCard={chosenCard} />
         </div>
       </div>
     </div>

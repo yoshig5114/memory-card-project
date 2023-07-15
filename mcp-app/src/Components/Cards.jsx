@@ -1,4 +1,4 @@
-import React, { useState} from "react";
+import React from "react";
 import romeCardBack from "../assets/romeCard.jpg";
 import cardOne from "../assets/cardOne.jpg";
 import cardTwo from "../assets/cardTwo.jpg";
@@ -24,40 +24,40 @@ export const cardFrontData = [
     { id: 10, name: "ten", image: cardTen, seen: false },
   ];
 
-  export default function Card({ onClick }) {
-    const [cardIndex, setCardIndex] = useState(null);
-    const [cardFront, setCardFront] = useState(cardFrontData);
+  export default function Card(props) {
+    // const [cardIndex, setCardIndex] = useState(null);
+    // const [cardFront, setCardFront] = useState(cardFrontData);
   
-    function handleCardClick() {
-        if (cardIndex !== null) {
-          onClick(cardFrontData[cardIndex].id);
-        } else {
-          onClick(null);
-        }
+    // function handleCardClick(props) {
+    //     if (cardIndex !== null) {
+    //       onClick(startGame);
+    //     } else {
+    //       onClick(null);
+    //     }
     
-        let unseenCards = cardFront.filter((card) => !card.seen);
-        if (unseenCards.length === 0) {
-          // Handle game over logic
-          return;
-        }
-        const randomIndex = Math.floor(Math.random() * unseenCards.length);
-        const chosenCard = unseenCards[randomIndex];
+    //     let unseenCards = cardFront.filter((card) => !card.seen);
+    //     if (unseenCards.length === 0) {
+    //       // Handle game over logic
+    //       return;
+    //     }
+    //     const randomIndex = Math.floor(Math.random() * unseenCards.length);
+    //     // const chosenCard = unseenCards[randomIndex];
     
-        const updatedCardFront = cardFront.map((card) =>
-          card.id === chosenCard.id ? { ...card, seen: true } : card
-        );
-        setCardFront(updatedCardFront);
+    //     const updatedCardFront = cardFront.map((card) =>
+    //       card.id === chosenCard.id ? { ...card, seen: true } : card
+    //     );
+    //     setCardFront(updatedCardFront);
     
-        setCardIndex(chosenCard.id);
-      }
+    //     setCardIndex(chosenCard.id);
+    //   }
     
       return (
         <div className="card-container">
           <img
             className="card"
             alt="card"
-            src={cardIndex === null ? romeCardBack : cardFront[cardIndex].image}
-            onClick={handleCardClick}
+            src={props.chosenCard === null ? romeCardBack : props.card.image}
+            onClick={props.onClick}
           />
         </div>
       );

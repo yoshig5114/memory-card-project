@@ -1,7 +1,7 @@
 import React from 'react';
 
 export default function PlayArea({ onClick }) {
-  function handleAnswer(answer) {
+   function handleAnswer(answer) {
    if(onClick){
     onClick(answer);
    }
